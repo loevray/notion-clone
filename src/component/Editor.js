@@ -132,7 +132,6 @@ export default class Editor extends Component {
       }
       this.setState(nextState);
       const { id, title, content } = this.state;
-      console.log(id, title, content);
       this.props.documentAutoSave({ id, title, content });
     };
     this.addEvent("keydown", ".editor", keyDownHandler);

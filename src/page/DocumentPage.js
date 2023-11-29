@@ -1,6 +1,5 @@
 import Editor from "../component/Editor.js";
 import Title from "../common/Title.js";
-import { request } from "../utils/api.js";
 import { getPathData } from "../utils/getPathData.js";
 import { store } from "../main.js";
 import {
@@ -29,19 +28,25 @@ export default class DocumentPage extends Component {
     const data = store.useSelector(
       (state) => state.documentsReducer.selectedDocument
     );
+    console.log(data);
     this.wrapper.innerHTML = "";
-    const { id, title, content } = data;
+    const { id, title, content, path } = data;
     console.log("docpage rendered");
     if (id) {
-      new Title({
-        $target: this.wrapper,
-        props: {
-          initialState: {
-            href: id,
-            title,
-          },
-        },
-      });
+      if (path.length) {
+        path.forEach(
+          (title) =>
+            new Title({
+              $target: this.wrapper,
+              props: {
+                initialState: {
+                  href: "",
+                  title,
+                },
+              },
+            })
+        );
+      }
       let timerOfSetTimeout = null;
       new Editor({
         $target: this.wrapper,
@@ -55,10 +60,9 @@ export default class DocumentPage extends Component {
             if (timerOfSetTimeout !== null) {
               clearTimeout(timerOfSetTimeout);
             }
-            timerOfSetTimeout = setTimeout(
-              () => store.dispatch(updateDocumentAsync(documentData)),
-              1500
-            );
+            timerOfSetTimeout = setTimeout(() => {
+              store.dispatch(updateDocumentAsync(documentData));
+            }, 1500);
           },
         },
       });
