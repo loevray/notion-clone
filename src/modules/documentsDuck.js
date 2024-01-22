@@ -29,9 +29,7 @@ const getSelectedDocumentPath = (documents, currentId) => {
       return;
     }
     if (document?.documents?.length) {
-      document.documents.forEach((doc) =>
-        getPath(doc, [...parent, document.title])
-      );
+      document.documents.forEach((doc) => getPath(doc, [...parent, document]));
     }
   };
   documents.forEach((doc) => getPath(doc, []));

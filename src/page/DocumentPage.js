@@ -35,12 +35,12 @@ export default class DocumentPage extends Component {
     if (id) {
       if (path.length) {
         path.forEach(
-          (title) =>
+          ({ id: parentId, title }) =>
             new Title({
               $target: this.wrapper,
               props: {
                 initialState: {
-                  href: "",
+                  href: parentId,
                   title,
                 },
               },
