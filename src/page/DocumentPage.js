@@ -8,6 +8,7 @@ import {
 } from "../modules/documentsDuck.js";
 import Component from "../core/Component.js";
 import { observe, unobserve } from "../utils/observer/Observe.js";
+import { push } from "../utils/handleRouteEvent.js";
 
 // initialState : {doucmentId :null, document:null}
 export default class DocumentPage extends Component {
@@ -28,10 +29,11 @@ export default class DocumentPage extends Component {
     const data = store.useSelector(
       (state) => state.documentsReducer.selectedDocument
     );
-    console.log(data);
+
     this.wrapper.innerHTML = "";
+
     const { id, title, content, path } = data;
-    console.log("docpage rendered");
+
     if (id) {
       if (path.length) {
         path.forEach(
@@ -40,13 +42,15 @@ export default class DocumentPage extends Component {
               $target: this.wrapper,
               props: {
                 initialState: {
-                  href: parentId,
+                  href: `documents/${parentId}`,
                   title,
                 },
+                onClick: () => push(`/documents/${parentId}`),
               },
             })
         );
       }
+
       let timerOfSetTimeout = null;
       new Editor({
         $target: this.wrapper,

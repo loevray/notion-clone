@@ -1,4 +1,5 @@
 import Component from "../core/Component.js";
+import { push } from "../utils/handleRouteEvent.js";
 
 export default class Title extends Component {
   constructor({ $target, props }) {
@@ -19,6 +20,9 @@ export default class Title extends Component {
     this.render();
   }
   setEvent() {
-    this.addEvent("click", ".title", (e) => e.preventDefault());
+    this.addEvent("click", ".title", (e) => {
+      e.preventDefault();
+      this.props.onClick && this.props.onClick();
+    });
   }
 }
