@@ -21,6 +21,10 @@ export const createDocumentAsync =
         type: CREATE_DOCUMENT,
         payload: createdDocument,
       });
+
+      if (createdDocument) {
+        dispatch(fetchDocumentsAsync());
+      }
     } catch (e) {
       console.error(e);
     }

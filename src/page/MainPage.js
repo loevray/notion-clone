@@ -36,9 +36,8 @@ export default class MainPage extends Component {
     this.wrapper.innerHTML = "";
 
     const { id, title, content, path } = data;
-    console.log(path);
     if (id) {
-      if (path.length) {
+      if (path?.length) {
         path.forEach(
           ({ id: parentId, title }) =>
             new Title({

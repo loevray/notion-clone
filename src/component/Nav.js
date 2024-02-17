@@ -57,8 +57,6 @@ export default class Nav extends Component {
       $target: this.wrapper,
       props: {
         initialState: data,
-        createDocument: this.createDocument.bind(this),
-        removeDocument: this.removeDocument.bind(this),
         depth: 0,
       },
     });
@@ -71,7 +69,6 @@ export default class Nav extends Component {
         },
         onClick: async () => {
           store.dispatch(createDocumentAsync());
-          store.dispatch(fetchDocumentsAsync());
           const storage = new Storage(window.localStorage);
           storage.setItem(selectedDocument.id, { isFolded: true });
         },
