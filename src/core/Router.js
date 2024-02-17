@@ -12,6 +12,7 @@ export default class Router {
     this.addRouteEvent();
     this.prevComponent = null;
   }
+
   addRoutesInMap() {
     this.routes.forEach((route) =>
       this.routesMap.set(route.path, {
@@ -20,20 +21,25 @@ export default class Router {
       })
     );
   }
+
   handleRoute() {
     const [path, pathData] = getPathData();
+    console.log(path);
     if (!path) {
       this.$target.innerHTML = "";
       return;
     }
+
     if (this.prevComponent) {
       this.prevComponent.unmount();
     }
+
     const { component, initialState } = this.routesMap.get(path) || {
       //routes.Map에 없을때 에러처리용
       component: ErrorPage,
       initialState: "",
     };
+
     this.prevComponent = new component({
       $target: this.$target,
       props: {

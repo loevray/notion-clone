@@ -50,6 +50,11 @@ export default class Nav extends Component {
     const selectedDocument = store.useSelector(
       (state) => state.documentsReducer.selectedDocument
     );
+
+    if (Object.keys(selectedDocument).length) {
+      push(`/documents/${selectedDocument.id}`);
+    }
+
     console.log("nav rendered");
     this.wrapper.innerHTML = "";
     new DocumentListHeader({ $target: this.wrapper });

@@ -17,18 +17,25 @@ export const createDocumentAsync =
         body: JSON.stringify(body),
       });
 
+      if (!createdDocument) {
+        throw new Error("문서 생성되지 않음");
+      }
+
       dispatch({
         type: CREATE_DOCUMENT,
         payload: createdDocument,
       });
 
-      if (createdDocument) {
-        dispatch(fetchDocumentsAsync());
-      }
+      dispatch(fetchDocumentsAsync());
     } catch (e) {
       console.error(e);
     }
   };
+
+const checkSelectedDocument = (removedId, selectedId) => {
+  if (removedId === selectedId) return true;
+  return false;
+};
 
 export const removeDocumentASync = (documentId) => async (dispatch) => {
   try {
@@ -40,9 +47,16 @@ export const removeDocumentASync = (documentId) => async (dispatch) => {
       method: "DELETE",
     });
 
-    if (deletedDocument) {
-      dispatch(fetchDocumentsAsync());
+    if (!deletedDocument) {
+      throw new Error("문서 삭제되지 않음!");
     }
+
+    dispatch({
+      type: REMOVE_DOCUMENT,
+      payload: deletedDocument.id,
+    });
+
+    dispatch(fetchDocumentsAsync());
   } catch (e) {
     console.error(e);
   }
@@ -97,9 +111,9 @@ export const fetchCurrentDocumentAsync =
     } catch (e) {
       console.log(e);
       alert("존재하지 않는 문서군요?");
-      push("/");
     }
   };
+
 /* {
     "id": 122298,
     "title": "제목 없음",
@@ -110,6 +124,7 @@ export const fetchCurrentDocumentAsync =
     "created_at": "2023-11-19T14:36:32.926Z",
     "updated_at": "2023-11-19T14:36:32.930Z"
   } */
+
 export const updateDocumentAsync = (documentData) => async (dispatch) => {
   try {
     const { id, title, content } = documentData;
@@ -167,10 +182,17 @@ export default function documentsReducer(state = initialState, action = {}) {
       };
     }
     case REMOVE_DOCUMENT: {
-      const temp = getDeepCopy(state.documents)
-        .flat(Infinity)
-        .find(({ id }) => id === action.payload);
-      console.log(temp);
+      console.log("removed");
+      /*       const selectedDocument = checkSelectedDocument(
+        action.payload,
+        state.selectedDocument?.id
+      )
+        ? {}
+        : state.selectedDocument;
+      return {
+        ...state,
+        selectedDocument,
+      }; */
     }
     default:
       return state;
