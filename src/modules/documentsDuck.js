@@ -5,6 +5,7 @@ const FETCH_DOCUMENTS = "documents/FETCH_DOCUMENTS";
 const FETCH_CURRENT_DOCUMENT = "documents/FETCH_CURRENT_DOCUMENT";
 const UPDATE_DOCUMENT = "documents/UPDATE_DOCUMENT";
 const CREATE_DOCUMENT = "documents/CREATE_DOCUMENT";
+const REMOVE_DOCUMENT = "documents/REMOVE_DOCUMENT";
 
 export const createDocumentAsync =
   (parentId = null) =>
@@ -24,6 +25,24 @@ export const createDocumentAsync =
       console.error(e);
     }
   };
+
+export const removeDocumentASync = (documentId) => async (dispatch) => {
+  try {
+    if (!documentId) {
+      return alert("삭제하려는 문서 아이디를 지정해주세요");
+    }
+
+    const deletedDocument = await request(`/documents/${documentId}`, {
+      method: "DELETE",
+    });
+
+    if (deletedDocument) {
+      dispatch(fetchDocumentsAsync());
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const fetchDocuments = async (dispatch) => {
   const documents = await request("/documents");
@@ -142,6 +161,12 @@ export default function documentsReducer(state = initialState, action = {}) {
         ...state,
         selectedDocument: action.payload,
       };
+    }
+    case REMOVE_DOCUMENT: {
+      const temp = getDeepCopy(state.documents)
+        .flat(Infinity)
+        .find(({ id }) => id === action.payload);
+      console.log(temp);
     }
     default:
       return state;

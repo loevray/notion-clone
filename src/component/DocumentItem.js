@@ -2,6 +2,8 @@ import Button from "../common/Button.js";
 import Title from "../common/Title.js";
 import { paddingCoefficient } from "../constants/paddingCoefficient.js";
 import Component from "../core/Component.js";
+import { store } from "../main.js";
+import { removeDocumentASync } from "../modules/documentsDuck.js";
 import arrowIconSvg from "../svg/arrowIcon.js";
 import plusIcon from "../svg/plusIcon.js";
 import xIcon from "../svg/xIcon.js";
@@ -92,7 +94,8 @@ export default class DocumentItem extends Component {
           content: xIcon,
         },
         onClick: (e) => {
-          removeDocument(this.wrapper.dataset.id);
+          /* removeDocument(this.wrapper.dataset.id); */
+          store.dispatch(removeDocumentASync(this.wrapper.dataset.id));
           this.storage.removeItem(this.wrapper.dataset.id);
         },
       },
