@@ -29,14 +29,12 @@ export default class DocumentList extends Component {
   }
 
   renderChild() {
-    const { createDocument, removeDocument, depth } = this.props;
+    const { depth } = this.props;
     this.state.forEach((document) => {
       new DocumentItem({
         $target: this.wrapper,
         props: {
           initialState: document,
-          createDocument,
-          removeDocument,
           depth: depth + 1,
           highlightSelectedDocument: this.highlightSelectedDocument.bind(this),
         },

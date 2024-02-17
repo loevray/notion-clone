@@ -3,7 +3,11 @@ import Title from "../common/Title.js";
 import { paddingCoefficient } from "../constants/paddingCoefficient.js";
 import Component from "../core/Component.js";
 import { store } from "../main.js";
-import { removeDocumentASync } from "../modules/documentsDuck.js";
+import {
+  createDocumentAsync,
+  fetchDocumentsAsync,
+  removeDocumentASync,
+} from "../modules/documentsDuck.js";
 import arrowIconSvg from "../svg/arrowIcon.js";
 import plusIcon from "../svg/plusIcon.js";
 import xIcon from "../svg/xIcon.js";
@@ -16,6 +20,7 @@ export default class DocumentItem extends Component {
   constructor({ $target, props }) {
     super({ $target, props, tagName: "div" });
   }
+
   prepare() {
     const { depth } = this.props;
     this.$documentItemInner = document.createElement("div");
@@ -27,14 +32,17 @@ export default class DocumentItem extends Component {
     this.$documentItemInner.classList.add("document-item-inner");
     this.storage = new Storage(window.localStorage);
   }
+
   getChildDocuments() {
     return this.wrapper.querySelector(".document-children");
   }
+
   rotateSvg(selector) {
     const arrowIcon = selector.querySelector(".arrow-icon");
     arrowIcon.classList.toggle("rotate-90edge");
     arrowIcon.classList.toggle("rotate-default");
   }
+
   onArrowBtnClick(e) {
     const childDocuments = this.getChildDocuments();
     if (!childDocuments) {
@@ -50,6 +58,7 @@ export default class DocumentItem extends Component {
     });
     this.storage.setItem(id, { isFolded: !savedIsFolded });
   }
+
   isFoldedCheck() {
     const childDocuments = this.getChildDocuments();
     if (!childDocuments) return;
@@ -65,9 +74,10 @@ export default class DocumentItem extends Component {
       childDocuments.classList.add("display-none");
     }
   }
+
   renderChild() {
     this.wrapper.appendChild(this.$documentItemInner);
-    const { createDocument, removeDocument } = this.props;
+
     new Button({
       $target: this.$documentItemInner,
       props: {
@@ -78,6 +88,7 @@ export default class DocumentItem extends Component {
         onClick: this.onArrowBtnClick.bind(this),
       },
     });
+
     new Title({
       $target: this.$documentItemInner,
       props: {
@@ -87,6 +98,7 @@ export default class DocumentItem extends Component {
         },
       },
     });
+
     new Button({
       $target: this.$documentItemInner,
       props: {
@@ -100,6 +112,7 @@ export default class DocumentItem extends Component {
         },
       },
     });
+
     new Button({
       $target: this.$documentItemInner,
       props: {
@@ -107,11 +120,13 @@ export default class DocumentItem extends Component {
           content: plusIcon,
         },
         onClick: () => {
-          createDocument(this.wrapper.dataset.id);
+          store.dispatch(createDocumentAsync(this.wrapper.dataset.id));
+          store.dispatch(fetchDocumentsAsync());
           this.storage.setItem(this.wrapper.dataset.id, { isFolded: false });
         },
       },
     });
+
     //if문 내부를 다른 컴포넌트로 빼보자
     if (this.state.documents.length) {
       new DocumentList({
@@ -134,6 +149,7 @@ export default class DocumentItem extends Component {
     //dom이 모두 생기고 난 후, 접기 체크
     this.isFoldedCheck();
   }
+
   setEvent() {
     this.addEvent("click", ".document-item-inner", (e) => {
       if (e.target.tagName === "A") {
