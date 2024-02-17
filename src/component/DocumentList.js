@@ -27,6 +27,7 @@ export default class DocumentList extends Component {
       }
     });
   }
+
   renderChild() {
     const { createDocument, removeDocument, depth } = this.props;
     this.state.forEach((document) => {

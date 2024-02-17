@@ -4,6 +4,26 @@ import { push } from "../utils/handleRouteEvent.js";
 const FETCH_DOCUMENTS = "documents/FETCH_DOCUMENTS";
 const FETCH_CURRENT_DOCUMENT = "documents/FETCH_CURRENT_DOCUMENT";
 const UPDATE_DOCUMENT = "documents/UPDATE_DOCUMENT";
+const CREATE_DOCUMENT = "documents/CREATE_DOCUMENT";
+
+export const createDocumentAsync =
+  (parentId = null) =>
+  async (dispatch) => {
+    try {
+      const body = { title: "제목 없음", parent: parentId };
+      const createdDocument = await request("/documents", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+
+      dispatch({
+        type: CREATE_DOCUMENT,
+        payload: createdDocument,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
 const fetchDocuments = async (dispatch) => {
   const documents = await request("/documents");
@@ -13,7 +33,8 @@ const fetchDocuments = async (dispatch) => {
     payload: documents,
   });
 };
-export const fetchDocumentsAsync = () => async (dispatch, getState) => {
+
+export const fetchDocumentsAsync = () => async (dispatch) => {
   try {
     fetchDocuments(dispatch);
   } catch (e) {
@@ -114,6 +135,12 @@ export default function documentsReducer(state = initialState, action = {}) {
           title: action.payload.title,
           content: action.payload.content,
         },
+      };
+    }
+    case CREATE_DOCUMENT: {
+      return {
+        ...state,
+        selectedDocument: action.payload,
       };
     }
     default:

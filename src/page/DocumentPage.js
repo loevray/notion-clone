@@ -33,7 +33,7 @@ export default class DocumentPage extends Component {
     this.wrapper.innerHTML = "";
 
     const { id, title, content, path } = data;
-
+    console.log(path);
     if (id) {
       if (path.length) {
         path.forEach(
