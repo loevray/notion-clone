@@ -8,6 +8,7 @@ export default class DocumentList extends Component {
     this.highlightSelectedDocument();
     addDependOnPathEvent(this.highlightSelectedDocument);
   }
+
   prepare() {
     this.wrapper.classList.add("document-list");
     const { depth } = this.props;
@@ -15,6 +16,7 @@ export default class DocumentList extends Component {
       this.wrapper.classList.add("document-children");
     }
   }
+
   highlightSelectedDocument() {
     const documentList = document.querySelectorAll(".document-item-inner");
     const { pathname } = window.location;

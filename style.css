@@ -126,12 +126,12 @@ button:hover{
     transform: rotate(90deg);
     transition: transform 0.3s ease;
 }
-.document-page{
+.main-page{
     padding-left: 250px;
     flex:9;
     height: 200vh;
 }
-.document-page > .title{
+.main-page > .title{
     padding: 10px;
 }
 .editor{

@@ -1,4 +1,4 @@
-import DocumentPage from "./page/DocumentPage.js";
+import MainPage from "./page/MainPage.js";
 import Nav from "./component/Nav.js";
 import Component from "./core/Component.js";
 import Router from "./core/Router.js";
@@ -21,7 +21,7 @@ export default class App extends Component {
         { $target: this.$app },
         new Route({
           path: "documents",
-          component: DocumentPage,
+          component: MainPage,
           initialState: "",
         })
       );

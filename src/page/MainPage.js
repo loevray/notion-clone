@@ -11,20 +11,23 @@ import { observe, unobserve } from "../utils/observer/Observe.js";
 import { push } from "../utils/handleRouteEvent.js";
 
 // initialState : {doucmentId :null, document:null}
-export default class DocumentPage extends Component {
+export default class MainPage extends Component {
   constructor({ $target, props }) {
     super({ $target, props, tagName: "div" });
   }
+
   prepare() {
-    this.wrapper.classList.add("document-page");
+    this.wrapper.classList.add("main-page");
     const [path, documentId = pathData] = getPathData();
     this.documentId = documentId;
     this.getCurrentDocument();
     observe(this);
   }
+
   getCurrentDocument() {
     store.dispatch(fetchCurrentDocumentAsync(this.documentId));
   }
+
   render() {
     const data = store.useSelector(
       (state) => state.documentsReducer.selectedDocument
