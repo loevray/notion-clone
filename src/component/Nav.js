@@ -6,7 +6,10 @@ import { request } from "../utils/api.js";
 import { push } from "../utils/handleRouteEvent.js";
 import Storage from "../utils/storage.js";
 import { store } from "../main.js";
-import { fetchDocumentsAsync } from "../modules/documentsDuck.js";
+import {
+  createDocumentAsync,
+  fetchDocumentsAsync,
+} from "../modules/documentsDuck.js";
 import Component from "../core/Component.js";
 import { observe } from "../utils/observer/Observe.js";
 
@@ -20,9 +23,11 @@ export default class Nav extends Component {
     this.getDocuments();
     observe(this);
   }
+
   getDocuments() {
     store.dispatch(fetchDocumentsAsync());
   }
+
   async createDocument(id = null) {
     const body = { title: "제목 없음", parent: id };
     const response = await request("/documents", {
@@ -42,6 +47,9 @@ export default class Nav extends Component {
   }
   render() {
     const data = store.useSelector((state) => state.documentsReducer.documents);
+    const selectedDocument = store.useSelector(
+      (state) => state.documentsReducer.selectedDocument
+    );
     console.log("nav rendered");
     this.wrapper.innerHTML = "";
     new DocumentListHeader({ $target: this.wrapper });
@@ -62,9 +70,10 @@ export default class Nav extends Component {
           attributes: [{ name: "class", value: "add-root-doc-btn" }],
         },
         onClick: async () => {
-          const response = await this.createDocument();
+          store.dispatch(createDocumentAsync());
+          store.dispatch(fetchDocumentsAsync());
           const storage = new Storage(window.localStorage);
-          storage.setItem(response.id, { isFolded: true });
+          storage.setItem(selectedDocument.id, { isFolded: true });
         },
       },
     });
