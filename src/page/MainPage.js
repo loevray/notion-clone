@@ -68,7 +68,7 @@ export default class MainPage extends Component {
             }
             timerOfSetTimeout = setTimeout(() => {
               store.dispatch(updateDocumentAsync(documentData));
-            }, 1500);
+            }, 1000);
           },
         },
       });
@@ -77,6 +77,9 @@ export default class MainPage extends Component {
   }
   unmount() {
     unobserve(this);
+    if (!this.wrapper.parentNode) {
+      return;
+    }
     this.$target.removeChild(this.wrapper);
   }
 }
