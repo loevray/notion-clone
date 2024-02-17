@@ -109,6 +109,7 @@ export default class DocumentItem extends Component {
           /* removeDocument(this.wrapper.dataset.id); */
           store.dispatch(removeDocumentASync(this.wrapper.dataset.id));
           this.storage.removeItem(this.wrapper.dataset.id);
+          push("/");
         },
       },
     });

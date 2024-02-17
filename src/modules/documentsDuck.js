@@ -182,8 +182,7 @@ export default function documentsReducer(state = initialState, action = {}) {
       };
     }
     case REMOVE_DOCUMENT: {
-      console.log("removed");
-      /*       const selectedDocument = checkSelectedDocument(
+      const selectedDocument = checkSelectedDocument(
         action.payload,
         state.selectedDocument?.id
       )
@@ -192,7 +191,7 @@ export default function documentsReducer(state = initialState, action = {}) {
       return {
         ...state,
         selectedDocument,
-      }; */
+      };
     }
     default:
       return state;
