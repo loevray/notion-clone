@@ -24,7 +24,7 @@ export default class Router {
 
   handleRoute() {
     const [path, pathData] = getPathData();
-    console.log(path);
+
     if (!path) {
       this.$target.innerHTML = "";
       return;
@@ -47,6 +47,7 @@ export default class Router {
       },
     });
   }
+
   addRouteEvent() {
     initRouter(() => this.handleRoute());
   }

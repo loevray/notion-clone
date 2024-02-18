@@ -78,6 +78,7 @@ export default class DocumentItem extends Component {
   renderChild() {
     this.wrapper.appendChild(this.$documentItemInner);
 
+    this.props.highlightSelectedDocument(this.$documentItemInner);
     new Button({
       $target: this.$documentItemInner,
       props: {
@@ -158,10 +159,7 @@ export default class DocumentItem extends Component {
       }
       if (!e.target.closest("button")) {
         e.stopPropagation();
-        push(
-          `/documents/${this.wrapper.dataset.id}`,
-          this.props.highlightSelectedDocument
-        );
+        push(`/documents/${this.wrapper.dataset.id}`);
       }
     });
   }

@@ -9,6 +9,7 @@ import {
 import Component from "../core/Component.js";
 import { observe, unobserve } from "../utils/observer/Observe.js";
 import { push } from "../utils/handleRouteEvent.js";
+import { debounce } from "../utils/debounce.js";
 
 // initialState : {doucmentId :null, document:null}
 export default class MainPage extends Component {
@@ -53,8 +54,6 @@ export default class MainPage extends Component {
         })
     );
 
-    let timerOfSetTimeout = null;
-
     new Editor({
       $target: this.wrapper,
       props: {
@@ -63,14 +62,11 @@ export default class MainPage extends Component {
           title,
           content,
         },
-        documentAutoSave: (documentData) => {
-          if (timerOfSetTimeout !== null) {
-            clearTimeout(timerOfSetTimeout);
-          }
-          timerOfSetTimeout = setTimeout(() => {
-            store.dispatch(updateDocumentAsync(documentData));
-          }, 1000);
-        },
+        documentAutoSave: (documentData) =>
+          debounce(
+            () => store.dispatch(updateDocumentAsync(documentData)),
+            1000
+          ),
       },
     });
     this.renderChild();

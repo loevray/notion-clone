@@ -13,6 +13,7 @@ export const initRouter = (onRoute) => {
   window.addEventListener("popstate", () => onRoute());
   window.addEventListener("DOMContentLoaded", () => onRoute());
 };
+
 export const push = (nextUrl, callback) => {
   window.dispatchEvent(
     new CustomEvent("route-change", {
@@ -24,6 +25,6 @@ export const push = (nextUrl, callback) => {
   );
 };
 
-export const addDependOnPathEvent = (callback) => {
+export const usePopStateEvent = (callback) => {
   window.addEventListener("popstate", () => callback());
 };

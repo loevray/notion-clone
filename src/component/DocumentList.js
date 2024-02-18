@@ -1,4 +1,5 @@
 import Component from "../core/Component.js";
+import { store } from "../main.js";
 import { addDependOnPathEvent } from "../utils/handleRouteEvent.js";
 import DocumentItem from "./DocumentItem.js";
 
@@ -6,7 +7,6 @@ export default class DocumentList extends Component {
   constructor({ $target, props }) {
     super({ $target, tagName: "div", props });
     this.highlightSelectedDocument();
-    addDependOnPathEvent(this.highlightSelectedDocument);
   }
 
   prepare() {

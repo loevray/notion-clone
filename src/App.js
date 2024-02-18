@@ -13,9 +13,11 @@ export default class App extends Component {
     new Nav({
       $target: this.$target,
     });
+
     this.$app = document.createElement("main");
     this.$app.id = "app";
     this.$target.appendChild(this.$app);
+
     const routing = () => {
       new Router(
         { $target: this.$app },
@@ -26,6 +28,7 @@ export default class App extends Component {
         })
       );
     };
+
     routing();
   }
 }
