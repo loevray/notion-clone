@@ -1,12 +1,6 @@
 import { getTag } from "./getTag.js";
 
 export const isEqual = (value1, value2) => {
-  //두 값이 같은지 끝까지 재귀적으로 내려가며 처리해야할듯...
-  /* 
-    1. 두 값의 타입 비교
-    2. 배열, 객체가 아니면 값 자체 비교
-    3. 배열, 객체라면 순회하면서 다시 함수에 집어넣기
-  */
   const OBJ_TAG = "Object";
   const ARR_TAG = "Array";
   const value1Type = getTag(value1);

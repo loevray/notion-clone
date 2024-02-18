@@ -56,8 +56,11 @@ export default class Nav extends Component {
     }
 
     console.log("nav rendered");
+
     this.wrapper.innerHTML = "";
+
     new DocumentListHeader({ $target: this.wrapper });
+
     new DocumentList({
       $target: this.wrapper,
       props: {
@@ -65,6 +68,7 @@ export default class Nav extends Component {
         depth: 0,
       },
     });
+
     new Button({
       $target: this.wrapper,
       props: {

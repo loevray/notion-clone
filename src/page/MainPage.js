@@ -20,7 +20,7 @@ export default class MainPage extends Component {
 
   prepare() {
     this.wrapper.classList.add("main-page");
-    const [path, documentId = pathData] = getPathData();
+    const [, documentId = pathData] = getPathData();
     this.documentId = documentId;
     this.getCurrentDocument();
     observe(this);
@@ -29,6 +29,10 @@ export default class MainPage extends Component {
   getCurrentDocument() {
     store.dispatch(fetchCurrentDocumentAsync(this.documentId));
   }
+
+  documentAutoSave = debounce((documentData) =>
+    store.dispatch(updateDocumentAsync(documentData))
+  );
 
   render() {
     const data = store.useSelector(
@@ -41,19 +45,20 @@ export default class MainPage extends Component {
 
     if (!id) return;
 
-    path?.forEach(({ id: parentId, title }, index, arr) => {
-      new Title({
-        $target: this.wrapper,
-        props: {
-          initialState: {
-            href: `documents/${parentId}`,
-            title,
+    path?.forEach(
+      ({ id: parentId, title }) =>
+        new Title({
+          $target: this.wrapper,
+          props: {
+            initialState: {
+              href: `documents/${parentId}`,
+              title,
+            },
+            onClick: () =>
+              push(`/documents/${parentId}`, highlightSelectedDocument),
           },
-          onClick: () =>
-            push(`/documents/${parentId}`, highlightSelectedDocument),
-        },
-      });
-    });
+        })
+    );
 
     new Editor({
       $target: this.wrapper,
@@ -63,13 +68,10 @@ export default class MainPage extends Component {
           title,
           content,
         },
-        documentAutoSave: (documentData) =>
-          debounce(
-            () => store.dispatch(updateDocumentAsync(documentData)),
-            1000
-          ),
+        documentAutoSave: this.documentAutoSave,
       },
     });
+
     this.renderChild();
   }
 
