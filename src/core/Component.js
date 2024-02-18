@@ -4,6 +4,7 @@ import { validateState } from "../utils/validateState.js";
 export default class Component {
   state;
   props;
+
   constructor({ $target, tagName = null, props }) {
     this.$target = $target;
     this.wrapper = tagName ? document.createElement(tagName) : null;
@@ -14,6 +15,7 @@ export default class Component {
     this.prepare();
     this.render();
   }
+
   render() {
     if (this.wrapper) {
       const content = this.createTemplate();
@@ -21,12 +23,15 @@ export default class Component {
     }
     this.renderChild();
   }
+
   createTemplate() {
     return "";
   }
+
   setEvent() {
     this.addEvent();
   }
+
   addEvent(eventType, selector, callback) {
     if (!this.wrapper) {
       return;
@@ -36,8 +41,11 @@ export default class Component {
       callback(e);
     });
   }
+
   prepare() {}
+
   renderChild() {}
+
   setState(nextState) {
     const prevState = this.state;
     if (!isEqual(prevState, nextState)) {

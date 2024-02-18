@@ -36,45 +36,46 @@ export default class MainPage extends Component {
     this.wrapper.innerHTML = "";
 
     const { id, title, content, path } = data;
-    if (id) {
-      if (path?.length) {
-        path.forEach(
-          ({ id: parentId, title }) =>
-            new Title({
-              $target: this.wrapper,
-              props: {
-                initialState: {
-                  href: `documents/${parentId}`,
-                  title,
-                },
-                onClick: () => push(`/documents/${parentId}`),
-              },
-            })
-        );
-      }
 
-      let timerOfSetTimeout = null;
-      new Editor({
-        $target: this.wrapper,
-        props: {
-          initialState: {
-            id,
-            title,
-            content,
+    if (!id) return;
+
+    path?.forEach(
+      ({ id: parentId, title }) =>
+        new Title({
+          $target: this.wrapper,
+          props: {
+            initialState: {
+              href: `documents/${parentId}`,
+              title,
+            },
+            onClick: () => push(`/documents/${parentId}`),
           },
-          documentAutoSave: (documentData) => {
-            if (timerOfSetTimeout !== null) {
-              clearTimeout(timerOfSetTimeout);
-            }
-            timerOfSetTimeout = setTimeout(() => {
-              store.dispatch(updateDocumentAsync(documentData));
-            }, 1000);
-          },
+        })
+    );
+
+    let timerOfSetTimeout = null;
+
+    new Editor({
+      $target: this.wrapper,
+      props: {
+        initialState: {
+          id,
+          title,
+          content,
         },
-      });
-      this.renderChild();
-    }
+        documentAutoSave: (documentData) => {
+          if (timerOfSetTimeout !== null) {
+            clearTimeout(timerOfSetTimeout);
+          }
+          timerOfSetTimeout = setTimeout(() => {
+            store.dispatch(updateDocumentAsync(documentData));
+          }, 1000);
+        },
+      },
+    });
+    this.renderChild();
   }
+
   unmount() {
     unobserve(this);
     if (!this.wrapper.parentNode) {
