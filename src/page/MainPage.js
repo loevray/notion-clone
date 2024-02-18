@@ -14,6 +14,10 @@ import { highlightSelectedDocument } from "../utils/highlightSelectedDocument.js
 
 // initialState : {doucmentId :null, document:null}
 export default class MainPage extends Component {
+  documentAutoSave = debounce((documentData) =>
+    store.dispatch(updateDocumentAsync(documentData))
+  );
+
   constructor({ $target, props }) {
     super({ $target, props, tagName: "div" });
   }
@@ -29,10 +33,6 @@ export default class MainPage extends Component {
   getCurrentDocument() {
     store.dispatch(fetchCurrentDocumentAsync(this.documentId));
   }
-
-  documentAutoSave = debounce((documentData) =>
-    store.dispatch(updateDocumentAsync(documentData))
-  );
 
   render() {
     const data = store.useSelector(
@@ -81,5 +81,6 @@ export default class MainPage extends Component {
       return;
     }
     this.$target.removeChild(this.wrapper);
+    this.documentAutoSave.stop();
   }
 }
