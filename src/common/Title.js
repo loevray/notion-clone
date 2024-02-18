@@ -1,5 +1,4 @@
 import Component from "../core/Component.js";
-import { push } from "../utils/handleRouteEvent.js";
 
 export default class Title extends Component {
   constructor({ $target, props }) {

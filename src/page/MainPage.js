@@ -10,6 +10,7 @@ import Component from "../core/Component.js";
 import { observe, unobserve } from "../utils/observer/Observe.js";
 import { push } from "../utils/handleRouteEvent.js";
 import { debounce } from "../utils/debounce.js";
+import { highlightSelectedDocument } from "../utils/highlightSelectedDocument.js";
 
 // initialState : {doucmentId :null, document:null}
 export default class MainPage extends Component {
@@ -40,19 +41,19 @@ export default class MainPage extends Component {
 
     if (!id) return;
 
-    path?.forEach(
-      ({ id: parentId, title }) =>
-        new Title({
-          $target: this.wrapper,
-          props: {
-            initialState: {
-              href: `documents/${parentId}`,
-              title,
-            },
-            onClick: () => push(`/documents/${parentId}`),
+    path?.forEach(({ id: parentId, title }, index, arr) => {
+      new Title({
+        $target: this.wrapper,
+        props: {
+          initialState: {
+            href: `documents/${parentId}`,
+            title,
           },
-        })
-    );
+          onClick: () =>
+            push(`/documents/${parentId}`, highlightSelectedDocument),
+        },
+      });
+    });
 
     new Editor({
       $target: this.wrapper,

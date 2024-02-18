@@ -12,6 +12,7 @@ import arrowIconSvg from "../svg/arrowIcon.js";
 import plusIcon from "../svg/plusIcon.js";
 import xIcon from "../svg/xIcon.js";
 import { push } from "../utils/handleRouteEvent.js";
+import { highlightSelectedDocument } from "../utils/highlightSelectedDocument.js";
 import Storage from "../utils/storage.js";
 import DocumentList from "./DocumentList.js";
 import NoSubDocument from "./NoSubDocument.js";
@@ -78,7 +79,6 @@ export default class DocumentItem extends Component {
   renderChild() {
     this.wrapper.appendChild(this.$documentItemInner);
 
-    this.props.highlightSelectedDocument(this.$documentItemInner);
     new Button({
       $target: this.$documentItemInner,
       props: {
@@ -159,7 +159,10 @@ export default class DocumentItem extends Component {
       }
       if (!e.target.closest("button")) {
         e.stopPropagation();
-        push(`/documents/${this.wrapper.dataset.id}`);
+        push(
+          `/documents/${this.wrapper.dataset.id}`,
+          highlightSelectedDocument
+        );
       }
     });
   }
