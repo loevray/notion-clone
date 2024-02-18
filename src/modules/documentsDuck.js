@@ -129,7 +129,7 @@ export const updateDocumentAsync = (documentData) => async (dispatch) => {
   try {
     const { id, title, content } = documentData;
     const requestBody = {
-      title,
+      title: title || "제목 없음",
       content,
     };
     const updateDocument = await request(`/documents/${id}`, {
