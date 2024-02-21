@@ -26,6 +26,7 @@ export default class Editor extends Component {
     if (content && content.length)
       this.wrapper.querySelector(".content-wrapper").innerHTML = content;
   }
+
   makeNewLine() {
     const newLine = document.createElement("div");
     newLine.classList.add("content", "content-editable");
@@ -33,6 +34,7 @@ export default class Editor extends Component {
     newLine.setAttribute("placeholder", "내용을 입력하쎄용");
     return newLine;
   }
+
   convertMarkDown(text) {
     let isConverted = false;
     const prevText = text.split("\n").join("\n");
@@ -60,6 +62,7 @@ export default class Editor extends Component {
     }
     return [converted, isConverted];
   }
+
   setEvent() {
     const keyDownHandler = (e) => {
       //innerHTML수정하면 등록된 핸들러 날아가니까, 이벤트 위임 사용
@@ -73,7 +76,7 @@ export default class Editor extends Component {
       const enterKeyDown = (e) => {
         //기본 이벤트 막아주고 새 div생성후 형제로 붙여줌
         e.preventDefault();
-        const nextLine = makeNewLine();
+        const nextLine = this.makeNewLine();
         e.target.after(nextLine);
         nextLine.focus();
       };
