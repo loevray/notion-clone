@@ -1,7 +1,7 @@
 # 노션 클론
 
 바닐라 자바스크립트를 이용한 노션 클로닝 프로젝트입니다. 
-https://loevraynotion.vercel.app/
+[링크](https://loevraynotion.vercel.app/)
 
 ---
 
